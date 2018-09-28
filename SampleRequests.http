@@ -1,0 +1,10 @@
+POST http://localhost:7071/api/NewComment HTTP/1.1
+content-type: application/json
+
+{
+    "captchaToken":"superToken",
+    "name": "sample",
+    "postUrl": "blablabla",
+    "authorName": "Franz",
+    "text": "sehr interessanter kommentar"
+}
