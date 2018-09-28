@@ -1,23 +1,24 @@
 Kommentar-system
 * Azure functions fuer 
-    * Abrufen
+    * Abrufen der Kommentare eines posts
+    * Abrufen der Kommentare admin
     * Speichern
 * Daten speichern in Azure Table Storage
 * Kommentare periodisch in Post Markdown rendern
-* Spam detection?
-* Authentication?
+* Google recaptcha
+* Authentication: keine
 
 ## Flow
-Blog JS -> Queue -> Function (Binding ->Table)
+Add: Blog JS -> Function (Binding ->Table)
 
 ## Data Structures
 Comment
-* ID
-* Text
-* Author
-* CommentedPostRef
-* DateTimeUtc
-* ReplyToOtherComment
+* Timestamp (UTC)
+* RowKey
+* PartitionKey (= post url)
+* text
+* authorName
+* replyToRowKey
 
 
 ## Functions
