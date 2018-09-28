@@ -12,3 +12,15 @@ content-type: application/json
 
 GET http://localhost:7071/api/GetComments?postUrl=post2 HTTP/1.1
 
+POST https://adw1blogcomments.azurewebsites.net/api/NewComment HTTP/1.1
+content-type: application/json
+
+{
+    "captchaToken":"superToken",
+    "name": "sample",
+    "postUrl": "post2",
+    "authorName": "karl",
+    "text": "toller kommentar"
+}
+
+GET https://adw1blogcomments.azurewebsites.net/api/GetComments?postUrl=post2 HTTP/1.1
