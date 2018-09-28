@@ -49,6 +49,7 @@ function createEntity(body, rowKey){
     return { 
         PartitionKey: body.postUrl,
         RowKey: rowKey,
-        Name: body.name
+        text: body.text,
+        authorName: body.authorName
     }
 }

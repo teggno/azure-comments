@@ -7,15 +7,16 @@
       "direction": "in",
       "name": "req",
       "methods": [
-        "post"
+        "get"
       ]
     },
     {
       "name": "commentsTableBinding",
+      "type": "table",
+      "partitionKey": "{postUrl}",
       "tableName": "Comments",
       "connection": "adw1blogcomments_STORAGE",
-      "type": "table",
-      "direction": "out"
+      "direction": "in"
     },
     {
       "type": "http",

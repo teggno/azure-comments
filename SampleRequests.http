@@ -4,7 +4,11 @@ content-type: application/json
 {
     "captchaToken":"superToken",
     "name": "sample",
-    "postUrl": "blablabla",
-    "authorName": "Franz",
-    "text": "sehr interessanter kommentar"
+    "postUrl": "post2",
+    "authorName": "Heinz",
+    "text": "toller kommentar"
 }
+
+
+GET http://localhost:7071/api/GetComments?pstUrl=post2 HTTP/1.1
+
