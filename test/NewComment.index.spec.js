@@ -1,12 +1,23 @@
-require("./initProcessEnv");
 const mocks = require("./mocks");
 const sinon = require("sinon");
 const recaptcha = require("../common/recaptcha");
+const settings = require("../common/settings");
 const expect = require("chai").expect;
 
 describe("NewComment", () => {
+  let getSettingsStub;
+  before(() => {
+    const s = settings.getSettings();
+    s.recaptchaSkip = false;
+    getSettingsStub = sinon.stub(settings, "getSettings");
+    getSettingsStub.callsFake(() => s);
+  });
+
+  after(() => {
+    getSettingsStub.restore();
+  });
+
   it("should generate a 201 if all good", async () => {
-    process.env["recaptcha_skip"] = "false";
     const recaptchaStub = sinon.stub(recaptcha, "newVerifier");
     recaptchaStub.callsFake(() => () => ({ success: true }));
 
@@ -23,7 +34,6 @@ describe("NewComment", () => {
   });
 
   it("should generate a 400 if captcha not valid", async () => {
-    process.env["recaptcha_skip"] = "false";
     const recaptchaStub = sinon.stub(recaptcha, "newVerifier");
     recaptchaStub.callsFake(() => () => ({ success: false }));
 
@@ -40,18 +50,19 @@ describe("NewComment", () => {
   });
 
   it("should generate a 400 if required fields are missing in request body JSON", async () => {
-    process.env["recaptcha_skip"] = "false";
     const recaptchaStub = sinon.stub(recaptcha, "newVerifier");
     recaptchaStub.callsFake(() => () => ({ success: true }));
 
     const sut = require("../NewComment");
 
     const requiredFields = ["postUrl", "authorName", "text", "captchaToken"];
-    const statusList = await Promise.all(requiredFields.map(async field => {
-      const context = mocks.newComments.context();
-      await sut(context, { body: requestBodyWithMissingField(field) });
-      return context.res.status;
-    }));
+    const statusList = await Promise.all(
+      requiredFields.map(async field => {
+        const context = mocks.newComments.context();
+        await sut(context, { body: requestBodyWithMissingField(field) });
+        return context.res.status;
+      })
+    );
 
     expect(statusList).to.eql(requiredFields.map(() => 400));
 
