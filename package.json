@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "A serverless blog comment system running on azure functions.",
   "main": "GetComments/index.js",
+  "private": true,
   "scripts": {
     "test": "mocha",
     "report": "mocha --reporter mocha-junit-reporter",
