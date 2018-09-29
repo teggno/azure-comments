@@ -4,7 +4,7 @@
   "description": "A serverless blog comment system running on azure functions.",
   "main": "GetComments/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha",
     "pack": "funcpack pack ."
   },
   "repository": {
@@ -19,6 +19,9 @@
   },
   "homepage": "https://github.com/teggno/azure-comments#readme",
   "devDependencies": {
-    "azure-functions-pack": "^1.0.0"
+    "azure-functions-pack": "^1.0.0",
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0",
+    "sinon": "^6.3.4"
   }
 }

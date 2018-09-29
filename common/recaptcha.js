@@ -1,6 +1,6 @@
 const request = require("https").request;
 
-module.exports = function newCaptchaVerifier(googleUrl, secret) {
+exports.newVerifier = function(googleUrl, secret) {
   return async function(token, remoteIP) {
     let requestBody = `secret=${secret}&response=${token}`;
     if (remoteIP) requestBody += `&remoteip=${remoteIP}`;

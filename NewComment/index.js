@@ -1,4 +1,5 @@
-const recaptcha = require("./recaptcha").default;
+const recaptcha = require("../common/recaptcha");
+const getSettings = require("../common/settings").getSettings;
 
 module.exports = async function(context, req) {
   context.log("JavaScript HTTP trigger function processed a request.");
@@ -10,7 +11,7 @@ module.exports = async function(context, req) {
     return;
   }
   if (
-    !getSetting("recaptcha_skip") &&
+    !getSettings().recaptchaSkip &&
     !(await verifyCaptcha(req.body.captchaToken))
   ) {
     context.res = {
@@ -34,17 +35,16 @@ module.exports = async function(context, req) {
 };
 
 async function verifyCaptcha(token) {
-  const verify = recaptcha(
-    getSetting("recaptcha_url"),
-    getSetting("recaptcha_secret")
+  var settings = getSettings();
+  const verify = recaptcha.newVerifier(
+    settings.recaptchaUrl,
+    settings.recaptchaSecret
   );
   const result = await verify(token);
   return !!result.success;
 }
 
-function getSetting(name) {
-  return process.env[name];
-}
+
 
 function getMalformedRequestErrorMessage() {
   const sampleJson = JSON.stringify({
@@ -58,7 +58,7 @@ function getMalformedRequestErrorMessage() {
 }
 
 function validateBodyIsComment(body) {
-  return body && body.postUrl && body.text && body.authorName;
+  return body && body.postUrl && body.text && body.authorName && body.captchaToken;
 }
 
 function createEntity(body, rowKey) {
