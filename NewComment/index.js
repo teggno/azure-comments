@@ -12,7 +12,7 @@ module.exports = async function(context, req) {
   }
   if (
     !getSettings().recaptchaSkip &&
-    !(await verifyCaptcha(req.body.captchaToken))
+    !(await verifyCaptcha(req.body.captchaToken, context.log))
   ) {
     context.res = {
       status: 400,
@@ -34,17 +34,16 @@ module.exports = async function(context, req) {
   };
 };
 
-async function verifyCaptcha(token) {
+async function verifyCaptcha(token, log) {
   var settings = getSettings();
   const verify = recaptcha.newVerifier(
     settings.recaptchaUrl,
     settings.recaptchaSecret
   );
   const result = await verify(token);
+  log(result);
   return !!result.success;
 }
-
-
 
 function getMalformedRequestErrorMessage() {
   const sampleJson = JSON.stringify({
@@ -58,7 +57,9 @@ function getMalformedRequestErrorMessage() {
 }
 
 function validateBodyIsComment(body) {
-  return body && body.postUrl && body.text && body.authorName && body.captchaToken;
+  return (
+    body && body.postUrl && body.text && body.authorName && body.captchaToken
+  );
 }
 
 function createEntity(body, rowKey) {
