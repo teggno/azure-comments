@@ -1,12 +1,15 @@
 const request = require("https").request;
+const url = require('url');
 
 exports.newVerifier = function(googleUrl, secret) {
   return async function(token, remoteIP) {
     let requestBody = `secret=${secret}&response=${token}`;
     if (remoteIP) requestBody += `&remoteip=${remoteIP}`;
+    var urlObj = url.parse(googleUrl);
     const postOptions = {
-      path: googleUrl,
       method: "POST",
+      path: urlObj.pathname,
+      host: urlObj.hostname,
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
         "Content-Length": Buffer.byteLength(requestBody)
@@ -26,8 +29,9 @@ function promisedRequest(options, requestBody) {
 
       response.on("data", chunk => (responseBody += chunk));
       response.on("end", () => resolve(responseBody));
-      response.on("error", err => reject(error));
+      response.on("error", err => reject(err));
     });
+    req.on("error", err => reject(err));
     if (typeof requestBody !== "undefined") req.write(requestBody);
     req.end();
   });
