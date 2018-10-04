@@ -68,7 +68,7 @@ function createEntity(body, rowKey) {
     RowKey: rowKey,
     text: body.text,
     authorName: body.authorName,
-    createdTimestampUtc: body.createdTimestampUtc
+    createdTimestampUtc: new Date(body.createdTimestampUtc)
   };
   if (body.parentRowKey) {
     entity.parentRowKey = body.parentRowKey;
