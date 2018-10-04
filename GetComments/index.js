@@ -13,7 +13,7 @@ module.exports = async function (context, req) {
             text: src.text,
             email: src.email,
             parentRowKey: src.parentRowKey,
-            timestamp: src.timestamp
+            createdTimestampUtc: src.createdTimestampUtc
         })),
         headers: {
             "Content-Type": "application/json"

@@ -67,7 +67,8 @@ function createEntity(body, rowKey) {
     PartitionKey: body.postUrl,
     RowKey: rowKey,
     text: body.text,
-    authorName: body.authorName
+    authorName: body.authorName,
+    createdTimestampUtc: body.createdTimestampUtc
   };
   if (body.parentRowKey) {
     entity.parentRowKey = body.parentRowKey;
