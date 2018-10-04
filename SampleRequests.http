@@ -6,7 +6,8 @@ content-type: application/json
     "name": "sample",
     "postUrl": "post2",
     "authorName": "Heinz",
-    "text": "toller kommentar"
+    "text": "toller kommentar",
+    "createdTimestampUtc": "2018-10-04T06:02:34.359Z"
 }
 
 
@@ -24,3 +25,19 @@ content-type: application/json
 }
 
 GET https://adw1blogcomments.azurewebsites.net/api/GetComments?postUrl=post2 HTTP/1.1
+
+
+POST https://westeurope.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment/ HTTP/1.1
+Content-Type: application/json
+Ocp-Apim-Subscription-Key: ****
+
+{
+   "documents": [
+    {
+      "language": "en",
+      "id": "1",
+      "text": "Hello world. This is some input text that I love."
+    }
+  ]
+}
+

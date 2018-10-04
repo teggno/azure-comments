@@ -18,6 +18,13 @@
       "direction": "out"
     },
     {
+      "name": "textanalyticsQueue",
+      "queueName": "textanalytics",
+      "connection": "adw1blogcomments_STORAGE",
+      "type": "queue",
+      "direction": "out"
+    },
+    {
       "type": "http",
       "direction": "out",
       "name": "res"

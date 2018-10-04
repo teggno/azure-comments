@@ -1,0 +1,21 @@
+{
+  "disabled": false,
+  "bindings": [
+    {
+      "name": "textanalyticsQueueItem",
+      "type": "queueTrigger",
+      "direction": "in",
+      "queueName": "textanalytics",
+      "connection": "adw1blogcomments_STORAGE"
+    },
+    {
+      "name": "commentsTableBinding",
+      "type": "table",
+      "partitionKey": "{PartitionKey}",
+      "rowKey": "{RowKey}",
+      "tableName": "Comments",
+      "connection": "adw1blogcomments_STORAGE",
+      "direction": "in"
+    }
+  ]
+}

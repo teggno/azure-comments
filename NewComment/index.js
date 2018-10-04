@@ -21,9 +21,18 @@ module.exports = async function(context, req) {
     return;
   }
 
+  const partitionKey = req.body.postUrl;
   const rowKey = context.bindingData.sys.randGuid;
-  const entity = createEntity(req.body, rowKey);
+  const entity = createEntity(req.body, partitionKey, rowKey);
   context.bindings.commentsTableBinding = [entity];
+
+  // Store the reference to the new table entity in the queue. Actually RowKey alone
+  // is already unique but queries to the table are faster when the Partition Key is
+  // included so we store it in the queue message too.
+  context.bindings.textanalyticsQueue = JSON.stringify({
+    PartitionKey: partitionKey,
+    RowKey: rowKey
+  });
 
   context.res = {
     status: 201, // Created
@@ -62,9 +71,9 @@ function validateBodyIsComment(body) {
   );
 }
 
-function createEntity(body, rowKey) {
+function createEntity(body, partitionKey, rowKey) {
   var entity = {
-    PartitionKey: body.postUrl,
+    PartitionKey: partitionKey,
     RowKey: rowKey,
     text: body.text,
     authorName: body.authorName,
