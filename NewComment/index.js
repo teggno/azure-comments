@@ -63,10 +63,17 @@ function validateBodyIsComment(body) {
 }
 
 function createEntity(body, rowKey) {
-  return {
+  var entity = {
     PartitionKey: body.postUrl,
     RowKey: rowKey,
     text: body.text,
     authorName: body.authorName
   };
+  if (body.parentRowKey) {
+    entity.parentRowKey = body.parentRowKey;
+  }
+  if (body.email) {
+    entity.email = body.email;
+  }
+  return entity;
 }

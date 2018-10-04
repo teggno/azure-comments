@@ -1,14 +1,6 @@
 module.exports = async function (context, req) {
     context.log('JavaScript HTTP trigger function processed a request.');
 
-    // if (!req.query.postUrl) {
-    //     context.res = {
-    //         status: 400,
-    //         body: "Must be a GET request with a postUrl query string parameter"
-    //     };
-    //     return;
-    // }
-
     if (!context.bindings.commentsTableBinding){
         return;
     }
@@ -18,7 +10,10 @@ module.exports = async function (context, req) {
             postUrl: src.PartitionKey,
             rowKey: src.RowKey,
             authorName: src.authorName,
-            text: src.text
+            text: src.text,
+            email: src.email,
+            parentRowKey: src.parentRowKey,
+            timestamp: src.timestamp
         })),
         headers: {
             "Content-Type": "application/json"
