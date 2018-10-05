@@ -16,7 +16,8 @@
       "partitionKey": "{postUrl}",
       "tableName": "Comments",
       "connection": "adw1blogcomments_STORAGE",
-      "direction": "in"
+      "direction": "in",
+      "filter": "public eq true"
     },
     {
       "type": "http",

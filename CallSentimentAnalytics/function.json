@@ -2,27 +2,20 @@
   "disabled": false,
   "bindings": [
     {
-      "authLevel": "anonymous",
-      "type": "httpTrigger",
+      "name": "sentimentQueueItem",
+      "type": "queueTrigger",
       "direction": "in",
-      "name": "req",
-      "methods": [
-        "post"
-      ]
+      "queueName": "sentiment",
+      "connection": "adw1blogcomments_STORAGE"
     },
     {
       "name": "commentsTableBinding",
+      "type": "table",
+      "partitionKey": "{PartitionKey}",
+      "rowKey": "{RowKey}",
       "tableName": "Comments",
       "connection": "adw1blogcomments_STORAGE",
-      "type": "table",
-      "direction": "out"
-    },
-    {
-      "name": "sentimentQueue",
-      "queueName": "sentiment",
-      "connection": "adw1blogcomments_STORAGE",
-      "type": "queue",
-      "direction": "out"
+      "direction": "in"
     },
     {
       "name": "moderationQueue",
@@ -32,9 +25,11 @@
       "direction": "out"
     },
     {
-      "type": "http",
-      "direction": "out",
-      "name": "res"
+      "name": "keyPhrasesQueue",
+      "queueName": "keyphrases",
+      "connection": "adw1blogcomments_STORAGE",
+      "type": "queue",
+      "direction": "out"
     }
   ]
 }

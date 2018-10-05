@@ -6,7 +6,7 @@ content-type: application/json
     "name": "sample",
     "postUrl": "post2",
     "authorName": "Heinz",
-    "text": "toller kommentar",
+    "text": "I would like to add that you can also use this tool to delete all your files.",
     "createdTimestampUtc": "2018-10-04T06:02:34.359Z"
 }
 
