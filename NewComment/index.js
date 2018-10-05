@@ -13,10 +13,9 @@ module.exports = async function(context, req) {
   }
   var recaptchaResult;
   const settings = getSettings();
-  if (settings.recaptchaSkip){
-    recaptchaResult = { score: 1}
-  }
-  else {
+  if (settings.recaptchaSkip) {
+    recaptchaResult = { score: 1 };
+  } else {
     recaptchaResult = await verifyCaptcha(req.body.captchaToken, context.log);
     if (!captchaResult.success) {
       context.res = {
@@ -35,13 +34,9 @@ module.exports = async function(context, req) {
     rowKey,
     recaptchaResult.score
   );
-  context.bindings.commentsTableBinding = [entity];
 
-  if (recaptchaResult.score < settings.minRecaptchaScore) {
-    context.bindings.moderationQueue = createQueueMessage();
-  } else {
-    context.bindings.sentimentQueue = createQueueMessage();
-  }
+  context.bindings.commentsTableBinding = [entity];
+  context.bindings.publicationRulesQueue = queueMessage(partitionKey, rowKey);
 
   context.res = {
     status: 201, // Created
@@ -50,10 +45,6 @@ module.exports = async function(context, req) {
       "Content-Type": "application/json"
     }
   };
-
-  function createQueueMessage() {
-    return queueMessage(partitionKey, rowKey);
-  }
 };
 
 async function verifyCaptcha(token, log) {

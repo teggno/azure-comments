@@ -6,7 +6,19 @@ content-type: application/json
     "name": "sample",
     "postUrl": "post2",
     "authorName": "Heinz",
-    "text": "I would like to add that you can also use this tool to delete all your files.",
+    "text": "I would like to add that you can also use this tool to delete all your files. But when will you write another post?",
+    "createdTimestampUtc": "2018-10-04T06:02:34.359Z"
+}
+
+POST http://localhost:7071/api/NewComment HTTP/1.1
+content-type: application/json
+
+{
+    "captchaToken":"superToken",
+    "name": "sample",
+    "postUrl": "post2",
+    "authorName": "Heinz",
+    "text": "Your post is freaking lame. I really don't like your writing style.",
     "createdTimestampUtc": "2018-10-04T06:02:34.359Z"
 }
 

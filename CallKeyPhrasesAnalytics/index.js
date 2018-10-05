@@ -1,7 +1,6 @@
-const getSettings = require("../common/settings").getSettings;
 const keyPhrases = require("../common/textAnalytics").keyPhrases;
-const queueMessage = require("../common/queueMessage");
 const commentTable = require("../common/commentTable");
+const queueMessage = require("../common/queueMessage");
 
 module.exports = async function(context, keyPhrasesQueueItem) {
   context.log(
@@ -10,7 +9,8 @@ module.exports = async function(context, keyPhrasesQueueItem) {
   );
 
   const comment = context.bindings.commentsTableBinding;
-  const keyPhrasesOfCommentResult = (await keyPhrases(comment.text)).documents[0];
+  const keyPhrasesOfCommentResult = (await keyPhrases(comment.text))
+    .documents[0];
   const keyPhrasesOfComment = keyPhrasesOfCommentResult.keyPhrases;
 
   await commentTable.mergeEntity({
@@ -19,39 +19,8 @@ module.exports = async function(context, keyPhrasesQueueItem) {
     keyPhrases: JSON.stringify(keyPhrasesOfComment)
   });
 
-  const settings = getSettings();
-  if (keyPhrasesOfComment.length < settings.minKeyphrases) {
-    context.bindings.moderationQueue = queueMessage(
-      comment.PartitionKey,
-      comment.RowKey
-    );
-    return;
-  }
-
-  // const keyPhrasesOfPost = [];
-  // const keyPhrasesOfComment = keyPhrasesOfCommentResultRaw.keyPhrases;
-  // const matches = intersect(
-  //   keyPhrasesOfComment.map(p => p.toLowerCase()),
-  //   keyPhrasesOfPost.map(p => p.toLowerCase())
-  // );
-
-  // if (matches.length < settings.minKeyphraseIntersections) {
-  //   context.bindings.moderationQueue = queueMessage(
-  //     comment.PartitionKey,
-  //     comment.RowKey
-  //   );
-  //   return;
-  // }
-
-  // make comment visible
-  await commentTable.mergeEntity({
-    PartitionKey: comment.PartitionKey,
-    RowKey: comment.RowKey,
-    public: true
-  });
-
+  context.bindings.publicationRulesQueue = queueMessage(
+    comment.PartitionKey,
+    comment.RowKey
+  );
 };
-
-function intersect(a, b) {
-  return a.filter(aa => b.some(bb => aa === bb));
-}

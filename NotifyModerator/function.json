@@ -1,0 +1,12 @@
+{
+  "disabled": false,
+  "bindings": [
+    {
+      "name": "moderationQueueItem",
+      "type": "queueTrigger",
+      "direction": "in",
+      "queueName": "moderation",
+      "connection": "adw1blogcomments_STORAGE"
+    }
+  ]
+}

@@ -18,8 +18,8 @@
       "direction": "in"
     },
     {
-      "name": "moderationQueue",
-      "queueName": "moderation",
+      "name": "publicationRulesQueue",
+      "queueName": "publicationrules",
       "connection": "adw1blogcomments_STORAGE",
       "type": "queue",
       "direction": "out"

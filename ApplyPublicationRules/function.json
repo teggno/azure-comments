@@ -2,10 +2,10 @@
   "disabled": false,
   "bindings": [
     {
-      "name": "sentimentQueueItem",
+      "name": "publicationRulesQueueItem",
       "type": "queueTrigger",
       "direction": "in",
-      "queueName": "sentiment",
+      "queueName": "publicationrules",
       "connection": "adw1blogcomments_STORAGE"
     },
     {
@@ -18,8 +18,22 @@
       "direction": "in"
     },
     {
-      "name": "publicationRulesQueue",
-      "queueName": "publicationrules",
+      "name": "sentimentQueue",
+      "queueName": "sentiment",
+      "connection": "adw1blogcomments_STORAGE",
+      "type": "queue",
+      "direction": "out"
+    },
+    {
+      "name": "keyPhrasesQueue",
+      "queueName": "keyphrases",
+      "connection": "adw1blogcomments_STORAGE",
+      "type": "queue",
+      "direction": "out"
+    },
+    {
+      "name": "moderationQueue",
+      "queueName": "moderation",
       "connection": "adw1blogcomments_STORAGE",
       "type": "queue",
       "direction": "out"
