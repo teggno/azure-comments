@@ -58,7 +58,7 @@ module.exports = async function(context, publicationRulesQueueItem) {
       isCurrent: () => true,
       execute: async () => {
         // keyPhrases has been set as the last field, so process keyPhrases
-        if (comment.keyPhrases.length < settings.minKeyphrases) {
+        if (comment.keyPhrases.length < settings.minKeyPhrases) {
           console.log(
             `Comment has ${
               comment.keyPhrases.length
@@ -75,7 +75,7 @@ module.exports = async function(context, publicationRulesQueueItem) {
         //   keyPhrasesOfComment.map(p => p.toLowerCase()),
         //   keyPhrasesOfPost.map(p => p.toLowerCase())
         // );
-        // if (matches.length < settings.minKeyphraseIntersections) {
+        // if (matches.length < settings.minKeyPhraseIntersections) {
         // console.log(
         //   `Comment has ${
         //     matches.length
