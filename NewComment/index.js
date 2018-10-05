@@ -17,7 +17,7 @@ module.exports = async function(context, req) {
     recaptchaResult = { score: 1 };
   } else {
     recaptchaResult = await verifyCaptcha(req.body.captchaToken, context.log);
-    if (!captchaResult.success) {
+    if (!recaptchaResult.success) {
       context.res = {
         status: 400,
         body: "Captcha rejected."
@@ -54,7 +54,6 @@ async function verifyCaptcha(token, log) {
     settings.recaptchaSecret
   );
   const result = await verify(token);
-  log(result);
   return result;
 }
 

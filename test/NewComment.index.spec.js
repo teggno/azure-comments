@@ -17,57 +17,57 @@ describe("NewComment", () => {
     getSettingsStub.restore();
   });
 
-  // it("should generate a 201 if all good", async () => {
-  //   const recaptchaStub = sinon.stub(recaptcha, "newVerifier");
-  //   recaptchaStub.callsFake(() => () => ({ success: true }));
+  it("should generate a 201 if all good", async () => {
+    const recaptchaStub = sinon.stub(recaptcha, "newVerifier");
+    recaptchaStub.callsFake(() => () => ({ success: true, score: 0.9 }));
 
-  //   let req = {
-  //     body: mocks.newComments.validRequestBody()
-  //   };
+    let req = {
+      body: mocks.newComments.validRequestBody()
+    };
 
-  //   const context = mocks.newComments.context();
-  //   const sut = require("../NewComment");
-  //   await sut(context, req);
-  //   expect(context.res.status).to.be.equal(201);
+    const context = mocks.newComments.context();
+    const sut = require("../NewComment");
+    await sut(context, req);
+    expect(context.res.status).to.be.equal(201);
 
-  //   recaptchaStub.restore();
-  // });
+    recaptchaStub.restore();
+  });
 
-  // it("should generate a 400 if captcha not valid", async () => {
-  //   const recaptchaStub = sinon.stub(recaptcha, "newVerifier");
-  //   recaptchaStub.callsFake(() => () => ({ success: false }));
+  it("should generate a 400 if captcha not valid", async () => {
+    const recaptchaStub = sinon.stub(recaptcha, "newVerifier");
+    recaptchaStub.callsFake(() => () => ({ success: false }));
 
-  //   let req = {
-  //     body: mocks.newComments.validRequestBody()
-  //   };
+    let req = {
+      body: mocks.newComments.validRequestBody()
+    };
 
-  //   const context = mocks.newComments.context();
-  //   const sut = require("../NewComment");
-  //   await sut(context, req);
-  //   expect(context.res.status).to.be.equal(400);
+    const context = mocks.newComments.context();
+    const sut = require("../NewComment");
+    await sut(context, req);
+    expect(context.res.status).to.be.equal(400);
 
-  //   recaptchaStub.restore();
-  // });
+    recaptchaStub.restore();
+  });
 
-  // it("should generate a 400 if required fields are missing in request body JSON", async () => {
-  //   const recaptchaStub = sinon.stub(recaptcha, "newVerifier");
-  //   recaptchaStub.callsFake(() => () => ({ success: true }));
+  it("should generate a 400 if required fields are missing in request body JSON", async () => {
+    const recaptchaStub = sinon.stub(recaptcha, "newVerifier");
+    recaptchaStub.callsFake(() => () => ({ success: true }));
 
-  //   const sut = require("../NewComment");
+    const sut = require("../NewComment");
 
-  //   const requiredFields = ["postUrl", "authorName", "text", "captchaToken"];
-  //   const statusList = await Promise.all(
-  //     requiredFields.map(async field => {
-  //       const context = mocks.newComments.context();
-  //       await sut(context, { body: requestBodyWithMissingField(field) });
-  //       return context.res.status;
-  //     })
-  //   );
+    const requiredFields = ["postUrl", "authorName", "text", "captchaToken"];
+    const statusList = await Promise.all(
+      requiredFields.map(async field => {
+        const context = mocks.newComments.context();
+        await sut(context, { body: requestBodyWithMissingField(field) });
+        return context.res.status;
+      })
+    );
 
-  //   expect(statusList).to.eql(requiredFields.map(() => 400));
+    expect(statusList).to.eql(requiredFields.map(() => 400));
 
-  //   recaptchaStub.restore();
-  // });
+    recaptchaStub.restore();
+  });
 });
 
 function requestBodyWithMissingField(name) {
