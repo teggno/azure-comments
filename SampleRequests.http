@@ -22,6 +22,12 @@ content-type: application/json
     "createdTimestampUtc": "2018-10-04T06:02:34.359Z"
 }
 
+PUT http://localhost:7071/api/ApplyModeration?key=eyJQYXJ0aXRpb25LZXkiOiJwb3N0MiIsIlJvd0tleSI6ImE4ODNkOTViLTIyZTQtNDIwYi1iNjYyLTUwOTVjYzk5OWRhOCIsInVuYXV0aGVudGljYXRlZE1vZGVyYXRpb25Ub2tlbiI6ImJkMDgwNTNjLWRlMDgtNDgyZi1hMDdjLTVlNzJjOTBhN2UzMiJ9 HTTP/1.1
+content-type: application/json
+
+{
+    "accepted":true
+}
 
 GET http://localhost:7071/api/GetComments?postUrl=post2 HTTP/1.1
 

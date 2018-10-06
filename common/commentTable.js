@@ -20,6 +20,25 @@ exports.mergeEntity = function(comment) {
   });
 };
 
+exports.replaceEntity = function(comment) {
+  const tableService = azure.createTableService(
+    getSettings().storageConnectionString
+  );
+  return new Promise((resolve, reject) => {
+    tableService.replaceEntity("Comments", comment, function(
+      error,
+      result,
+      response
+    ) {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(result);
+    });
+  });
+};
+
 exports.getComment = function(partitionKey, rowKey) {
   const tableService = azure.createTableService(
     getSettings().storageConnectionString
