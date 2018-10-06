@@ -39,11 +39,15 @@ module.exports = async function(context, req) {
   context.bindings.publicationRulesQueue = queueMessage(partitionKey, rowKey);
 
   context.res = {
-    status: 201, // Created
-    body: { rowKey: rowKey },
+    status: 202, // Accepted
     headers: {
-      "Content-Type": "application/json"
-    }
+      "Content-Type": "text/plain"
+    },
+    body:
+      "The comment has been received and will be processed. " +
+      "If the system determines that it has to go through " +
+      "moderation, it might take a while until it becomes publicly " +
+      "visible. Otherwise this doesn't take more than 10 seconds usually."
   };
 };
 

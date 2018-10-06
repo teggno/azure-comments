@@ -17,7 +17,7 @@ describe("NewComment", () => {
     getSettingsStub.restore();
   });
 
-  it("should generate a 201 if all good", async () => {
+  it("should generate a 202 if all good", async () => {
     const recaptchaStub = sinon.stub(recaptcha, "newVerifier");
     recaptchaStub.callsFake(() => () => ({ success: true, score: 0.9 }));
 
@@ -28,7 +28,7 @@ describe("NewComment", () => {
     const context = mocks.newComments.context();
     const sut = require("../NewComment");
     await sut(context, req);
-    expect(context.res.status).to.be.equal(201);
+    expect(context.res.status).to.be.equal(202);
 
     recaptchaStub.restore();
   });
