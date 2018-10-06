@@ -14,7 +14,9 @@ Queue1 -> Function(Binding1: Queue1) -> Text Analysis -> good: Queue2, bad: Queu
 Queue2 -> Function Update Table set visibility flag
 Queue3 -> Send mail with link for moderation
 
-## Need for moderation
+## Moderation
+
+### When to moderate
 Recaptcha return r, Sentiment return s
 
 1. Check recaptcha, store result in comment entity
@@ -29,16 +31,35 @@ Recaptcha return r, Sentiment return s
 
 Risk of doing it as above: As soon as a comment got through captcha, cognitive services is used which costs.
 
-
-First, check sentiment. If r < limit lr then needs moderation.
-
-Only the ones where r >= lr
-
-
 Another idea would be doing keyword extraction from the post itself and from the comment too and then check if there is any intersection between the two.
 
+### Moderation implementation
+Whenever a the system determines that a comment has to be moderated, a JSON object like `{"PartitionKey":"...", "RowKey": "..."}` is placed in the **moderation** queue.
 
-So, always check recaptcha, it's free.
+#### API endpoints involved
+1. An individual comment can be retrieved using a base64 encoded version of its PartitionKey/RowKey/unauthenticatedModerationToken combination. If it needs moderation, the RowKey is still secret as it hasn't been given to anyone. No Authentication is needed because it is unlikely enough that somebody can guess such a combination.
+2. Only comments with `public=false` can be moderated.
+3. The PUT endpoint that takes the moderation result receives the PartitionKey/RowKey/unauthenticatedModerationToken combination. No Authentication is needed because it is unlikely enough that somebody can guess such a combination.
+4. The PUT endpoint updates the comment in the Comments table with the result of the moderation and, if it was accepted, sets `public=true`.
+
+#### UI
+A standalone **Moderate comment** HTML page exists that gets the base64 encoded combination as query string. This page displays the comment and provides two buttons: "Accept" and "Decline". Whenever one of those buttons is clicked, the PUT request to the API above is performed.
+
+#### Notification
+When a comment is unqueued from the **moderation** queue, an email containing a link to the aforementioned **Moderate comment** page is sent to one configured email address.
+
+#### Necessary settings for moderation
+* General Email settings
+  * SMTP server name or IP
+  * Notification sender email address
+  * Notification sender reply to address
+* Notification receipient email address
+* Text for email with some placeholder for the link.
+
+
+
+
+
 
 
 Add "Report this comment" button.
